@@ -1,0 +1,5 @@
+digraph {
+Battleships [ label=" Battleships " shape= box ]
+GameStateMachine [ label=" GameStateMachine " shape= box ]
+
+}
