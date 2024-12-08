@@ -25,7 +25,7 @@ DEFINITIONS
     isFleetDeployed(player) == (player = Player_1 => fleet_1 /= {}) & (player = Player_2 => fleet_2 /= {});
     ANIMATION_FUNCTION == ({r, c, i| r:Grid_X & c:Grid_Y & 
             (
-                (current_turn = Player_1 => 
+                (current_turn = Player_2 => 
                     (
                         ((r,c):attacks(Player_1) => i=2) & 
                         ((r,c)/:attacks(Player_1) => (
@@ -35,7 +35,7 @@ DEFINITIONS
                     )
                 ) 
                 &
-                (current_turn = Player_2 => 
+                (current_turn = Player_1 => 
                     (
                         ((r,c):attacks(Player_2) => i=2) & 
                         ((r,c)/:attacks(Player_2) => (
