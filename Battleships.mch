@@ -10,11 +10,12 @@ SETS
     REPORT = {Player_1_Hit, Player_2_Hit, Player_1_Miss, Player_2_Miss, Error_Not_Turn, Player_1_Deployed, Player_2_Deployed}
 
 CONSTANTS
-    Grid, Grid_X, Grid_Y, Battleship_Count
+    Grid, Grid_X, Grid_Y, Max_Row, Max_Col, Battleship_Count, Anim_Col
 
 PROPERTIES
+    Max_Row = 10 & Max_Col = 10 & Anim_Col = 2*Max_Col + 1 &
     Grid_X <: NATURAL1 & Grid_Y <: NATURAL1 &
-    Grid_X = 1..10 & Grid_Y = 1..10 &
+    Grid_X = 1..Max_Row & Grid_Y = 1..Max_Col &
     Grid = {xx, yy | xx : Grid_X & yy : Grid_Y} &
     Battleship_Count : NATURAL1 & Battleship_Count = 3
     
@@ -23,29 +24,36 @@ DEFINITIONS
     isPlayerTurn(player) == (current_turn = player);
     isValidPosition(position) == (position : Grid);
     isFleetDeployed(player) == (player = Player_1 => fleet_1 /= {}) & (player = Player_2 => fleet_2 /= {});
-    ANIMATION_FUNCTION == ({r, c, i| r:Grid_X & c:Grid_Y & 
-            (
-                (current_turn = Player_2 => 
-                    (
-                        ((r,c):attacks(Player_1) => i=2) & 
-                        ((r,c)/:attacks(Player_1) => (
-                                ((r,c):fleet_2 => i=1) & ((r,c)/:fleet_2 => i=0)
-                            )
-                        )
-                    )
-                ) 
-                &
-                (current_turn = Player_1 => 
-                    (
-                        ((r,c):attacks(Player_2) => i=2) & 
-                        ((r,c)/:attacks(Player_2) => (
-                                ((r,c):fleet_1 => i=1) & ((r,c)/:fleet_1 => i=0)
-                            )
+    ANIMATION_FUNCTION ==
+    {r, c, i |
+        r : 1..Max_Row & c : 1..Anim_Col &
+        (
+            (c <= Max_Col => 
+                (
+                    ((r, c):attacks(Player_1) => i=2) & 
+                    ((r, c)/:attacks(Player_1) => 
+                        (
+                            ((r, c):fleet_2 => i=1) & 
+                            ((r, c)/:fleet_2 => i=0)
                         )
                     )
                 )
-            ) 
-        });
+            ) &
+            (c = Max_Col+1 => i=3) &
+            (c > Max_Col+1 => 
+                (
+                    ((r, (c-1)/2):attacks(Player_2) => i=2) & 
+                    ((r, (c-1)/2)/:attacks(Player_2) => 
+                        (
+                            ((r, (c-1)/2):fleet_1 => i=1) & 
+                            ((r, (c-1)/2)/:fleet_1 => i=0)
+                        )
+                    )
+                )
+            )
+        )
+    };
+
 
     ANIMATION_IMG0 == "images/1.gif";
     ANIMATION_IMG1 == "images/2.gif";
