@@ -30,7 +30,12 @@ DEFINITIONS
         (
             (c < Max_Col + 1 => 
                 (
-                    ((r, c):attacks(Player_2) => i=2) & 
+                    ((r, c):attacks(Player_2) => 
+                        (
+                            ((r, c):non_change_fleet_1 => i=3) &
+                            ((r, c)/:non_change_fleet_1 => i=2) 
+                        )
+                    ) & 
                     ((r, c)/:attacks(Player_2) => 
                         (
                             ((r, c):fleet_1 => i=1) & 
@@ -39,10 +44,15 @@ DEFINITIONS
                     )
                 )
             ) &
-            (c = Max_Col+1 => i=3) &
+            (c = Max_Col+1 => i=4) &
             (c > Max_Col+1 => 
                 (
-                    ((r, c-(1 + Max_Col)):attacks(Player_1) => i=2) & 
+                    ((r, c-(1 + Max_Col)):attacks(Player_1) => 
+                        (
+                            ((r, c-(1 + Max_Col)):non_change_fleet_2 => i=3) &
+                            ((r, c-(1 + Max_Col))/:non_change_fleet_2 => i=2) 
+                        )
+                    ) & 
                     ((r, c-(1 + Max_Col))/:attacks(Player_1) => 
                         (
                             ((r, c-(1 + Max_Col)):fleet_2 => i=1) & 
@@ -58,17 +68,20 @@ DEFINITIONS
     ANIMATION_IMG0 == "images/1.gif";
     ANIMATION_IMG1 == "images/2.gif";
     ANIMATION_IMG2 == "images/3.gif";
+    ANIMATION_IMG3 == "images/4.gif";
 
 VARIABLES
-    fleet_1, fleet_2, attacks
+    fleet_1, fleet_2, attacks, non_change_fleet_1, non_change_fleet_2
 
 INVARIANT
     fleet_1 : POW(Grid) & card(fleet_1) <= Battleship_Count &
     fleet_2 : POW(Grid) & card(fleet_2) <= Battleship_Count &
+    non_change_fleet_1 : POW(Grid) & card(non_change_fleet_1) <= Battleship_Count &
+    non_change_fleet_2 : POW(Grid) & card(non_change_fleet_2) <= Battleship_Count &
     attacks : PLAYER --> POW(Grid)
 
 INITIALISATION
-    fleet_1, fleet_2 := {}, {} || 
+    fleet_1, fleet_2, non_change_fleet_1, non_change_fleet_2 := {}, {}, {}, {} || 
     attacks := {Player_1 |-> {}, Player_2 |-> {}}
 
 OPERATIONS
@@ -84,6 +97,7 @@ OPERATIONS
         IF player = Player_1 THEN
             IF fleet_1 = {} THEN
                 fleet_1 := positions  ||  
+                non_change_fleet_1 := positions  ||  
                 report := Player_1_Deployed  ||
                 IF fleet_2 /= {} THEN
                     setState(Ongoing)
@@ -93,6 +107,7 @@ OPERATIONS
             THEN
                 IF fleet_2 = {} THEN
                     fleet_2 := positions || 
+                    non_change_fleet_2 := positions  ||  
                     report := Player_2_Deployed || 
                     IF fleet_1 /= {} THEN
                         setState(Ongoing)
