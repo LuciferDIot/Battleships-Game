@@ -28,13 +28,13 @@ DEFINITIONS
     {r, c, i |
         r : 1..Max_Row & c : 1..Anim_Col &
         (
-            (c <= Max_Col => 
+            (c < Max_Col + 1 => 
                 (
-                    ((r, c):attacks(Player_1) => i=2) & 
-                    ((r, c)/:attacks(Player_1) => 
+                    ((r, c):attacks(Player_2) => i=2) & 
+                    ((r, c)/:attacks(Player_2) => 
                         (
-                            ((r, c):fleet_2 => i=1) & 
-                            ((r, c)/:fleet_2 => i=0)
+                            ((r, c):fleet_1 => i=1) & 
+                            ((r, c)/:fleet_1 => i=0)
                         )
                     )
                 )
@@ -42,11 +42,11 @@ DEFINITIONS
             (c = Max_Col+1 => i=3) &
             (c > Max_Col+1 => 
                 (
-                    ((r, (c-1)/2):attacks(Player_2) => i=2) & 
-                    ((r, (c-1)/2)/:attacks(Player_2) => 
+                    ((r, c-(1 + Max_Col)):attacks(Player_1) => i=2) & 
+                    ((r, c-(1 + Max_Col))/:attacks(Player_1) => 
                         (
-                            ((r, (c-1)/2):fleet_1 => i=1) & 
-                            ((r, (c-1)/2)/:fleet_1 => i=0)
+                            ((r, c-(1 + Max_Col)):fleet_2 => i=1) & 
+                            ((r, c-(1 + Max_Col))/:fleet_2 => i=0)
                         )
                     )
                 )
