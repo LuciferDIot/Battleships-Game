@@ -25,39 +25,57 @@ DEFINITIONS
     isValidPosition(position) == (position : Grid);
     isFleetDeployed(player) == (player = Player_1 => fleet_1 /= {}) & (player = Player_2 => fleet_2 /= {});
     ANIMATION_FUNCTION ==
-    {r, c, i |
-        r : 1..Max_Row & c : 1..Anim_Col &
-        (
-            (c < Max_Col + 1 => 
-                (
-                    ((r, c):attacks(Player_2) => 
-                        (
-                            ((r, c):non_change_fleet_1 => i=3) &
-                            ((r, c)/:non_change_fleet_1 => i=2) 
-                        )
-                    ) & 
-                    ((r, c)/:attacks(Player_2) => 
-                        (
-                            ((r, c):fleet_1 => i=1) & 
-                            ((r, c)/:fleet_1 => i=0)
+    {row, column, i |
+        row : 1..Max_Row & column : 1..Anim_Col &
+        (current_turn = Player_1 => (
+                (column < Max_Col + 1 => 
+                    (
+                        ((row, column):fleet_1 => i=1) &
+                        ((row, column)/:fleet_1 => 
+                            (
+                                ((row, column):non_change_fleet_1 => i=3) &
+                                ((row, column)/:non_change_fleet_1 => i=0)
+                            )
                         )
                     )
+                ) &
+                (column = Max_Col+1 => i=4) &
+                (column > Max_Col+1 => 
+                    (
+                        ((row, column-(1 + Max_Col)):attacks(Player_1) => 
+                            (
+                                ((row, column-(1 + Max_Col)):non_change_fleet_2 => i=3) &
+                                ((row, column-(1 + Max_Col))/:non_change_fleet_2 => i=2) 
+                            )
+                        ) & 
+                        ((row, column-(1 + Max_Col))/:attacks(Player_1) => i=0)
+                    )
                 )
-            ) &
-            (c = Max_Col+1 => i=4) &
-            (c > Max_Col+1 => 
-                (
-                    ((r, c-(1 + Max_Col)):attacks(Player_1) => 
-                        (
-                            ((r, c-(1 + Max_Col)):non_change_fleet_2 => i=3) &
-                            ((r, c-(1 + Max_Col))/:non_change_fleet_2 => i=2) 
+            )
+        )
+        &
+        (current_turn = Player_2 => (
+                (column < Max_Col + 1 => 
+                    (
+                        ((row, column):fleet_2 => i=1) &
+                        ((row, column)/:fleet_2 => 
+                            (
+                                ((row, column):non_change_fleet_2 => i=3) &
+                                ((row, column)/:non_change_fleet_2 => i=0)
+                            )
                         )
-                    ) & 
-                    ((r, c-(1 + Max_Col))/:attacks(Player_1) => 
-                        (
-                            ((r, c-(1 + Max_Col)):fleet_2 => i=1) & 
-                            ((r, c-(1 + Max_Col))/:fleet_2 => i=0)
-                        )
+                    )
+                ) &
+                (column = Max_Col+1 => i=4) &
+                (column > Max_Col+1 => 
+                    (
+                        ((row, column-(1 + Max_Col)):attacks(Player_2) => 
+                            (
+                                ((row, column-(1 + Max_Col)):non_change_fleet_1 => i=3) &
+                                ((row, column-(1 + Max_Col))/:non_change_fleet_1 => i=2) 
+                            )
+                        ) & 
+                        ((row, column-(1 + Max_Col))/:attacks(Player_2) => i=0)
                     )
                 )
             )
