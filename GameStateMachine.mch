@@ -4,7 +4,8 @@
  */
 
 
-MACHINE GameStateMachine
+MACHINE 
+    GameStateMachine
 SETS
     PLAYER = {Player_1, Player_2};
     GAME_STATE = {Deploying_Fleets, Ongoing, Won_Player_1, Won_Player_2}

@@ -7,22 +7,31 @@ MACHINE
 INCLUDES 
     GameStateMachine
 SETS
-    REPORT = {Player_1_Hit, Player_2_Hit, Player_1_Miss, Player_2_Miss, Error_Not_Turn, Player_1_Deployed, Player_2_Deployed}
+    REPORT = {
+        Player_1_Hit, 
+        Player_2_Hit, 
+        Player_1_Miss, 
+        Player_2_Miss, 
+        Error_Not_Turn, 
+        Player_1_Deployed, 
+        Player_2_Deployed,
+        Position_Out_of_Grid,
+        Already_Deployed
+    }
 
 CONSTANTS
     Grid, Grid_X, Grid_Y, Max_Row, Max_Col, Battleship_Count, Anim_Col
 
 PROPERTIES
     Max_Row = 10 & Max_Col = 10 & Anim_Col = 2*Max_Col + 1 &
-    Grid_X <: NATURAL1 & Grid_Y <: NATURAL1 &
     Grid_X = 1..Max_Row & Grid_Y = 1..Max_Col &
     Grid = {xx, yy | xx : Grid_X & yy : Grid_Y} &
-    Battleship_Count : NATURAL1 & Battleship_Count = 3
+    Battleship_Count : NAT1 & Battleship_Count = 3
     
 DEFINITIONS
     isGameOver(fleet) == (card(fleet) = 1);
     isPlayerTurn(player) == (current_turn = player);
-    isValidPosition(position) == (position : Grid);
+    isValidPosition(position) == (position : NATURAL * NATURAL);
     isFleetDeployed(player) == (player = Player_1 => fleet_1 /= {}) & (player = Player_2 => fleet_2 /= {});
     ANIMATION_FUNCTION ==
     {row, column, i |
@@ -106,13 +115,14 @@ OPERATIONS
     report <-- deployFleet(player, positions) =
     PRE
         player : PLAYER & 
-        positions : POW(Grid) &
+        positions <: NATURAL * NATURAL &
         card(positions) = Battleship_Count &
         current_game_state = Deploying_Fleets &
+        // cant have without these conditions because proB doesnt show options to deploy
         (player = Player_1 => fleet_1 = {}) &
         (player = Player_2 => fleet_2 = {})
     THEN
-        IF player = Player_1 THEN
+        IF player = Player_1 & positions : POW(Grid) THEN
             IF fleet_1 = {} THEN
                 fleet_1 := positions  ||  
                 non_change_fleet_1 := positions  ||  
@@ -120,8 +130,10 @@ OPERATIONS
                 IF fleet_2 /= {} THEN
                     setState(Ongoing)
                 END
+            ELSE
+                report := Already_Deployed
             END
-        ELSE IF player = Player_2 
+        ELSE IF player = Player_2 & positions : POW(Grid)
             THEN
                 IF fleet_2 = {} THEN
                     fleet_2 := positions || 
@@ -130,7 +142,11 @@ OPERATIONS
                     IF fleet_1 /= {} THEN
                         setState(Ongoing)
                     END
+                ELSE
+                    report := Already_Deployed
                 END
+            ELSE
+                report := Position_Out_of_Grid
             END 
         END
     END;
@@ -143,7 +159,7 @@ OPERATIONS
         isFleetDeployed(current_turn) &
         target /: attacks(current_turn)
     THEN
-        IF isPlayerTurn(Player_1) THEN
+        IF isPlayerTurn(Player_1) & target : Grid THEN
             IF target : fleet_2 THEN
                 fleet_2 := fleet_2 - {target} || 
                 attacks(Player_1) := attacks(Player_1) \/ {target} || 
@@ -160,7 +176,7 @@ OPERATIONS
                 setCurrentPlayer(Player_2)
             END
             
-        ELSE IF isPlayerTurn(Player_2)
+        ELSE IF isPlayerTurn(Player_2) & target : Grid
             THEN
                 IF target : fleet_1 THEN
                     fleet_1 := fleet_1 - {target} || 
@@ -178,7 +194,7 @@ OPERATIONS
                     setCurrentPlayer(Player_1)
                 END
             ELSE
-                report := Error_Not_Turn
+                report := Position_Out_of_Grid
             END
         END
     END;
