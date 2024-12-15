@@ -1,0 +1,6 @@
+digraph module_hierarchy {
+  graph [page="8.5, 11",ratio=fill,size="7.5,10"];
+  1 [shape=record, style=bold, color=darkgreen, label="|{MACHINE Battleships\n|SETS\nREPORT = \{Player_1_Hit,...,Player_2_Deployed\}\n|VARIABLES\n (5 more)|CONSTANTS\n (7 more)|OPERATIONS\n (6 more)}|"];
+  2 [shape=record, color=steelblue, label="|{MACHINE GameStateMachine\n|SETS\nPLAYER = \{Player_1,Player_2\}\nGAME_STATE = \{Deploying_Fleets,...,Won_Player_2\}\n|VARIABLES\n (2 more)|OPERATIONS\n (4 more)}|"];
+  1 -> 2 [label="INCLUDES",color=navyblue];
+}
