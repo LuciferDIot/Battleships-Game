@@ -1,0 +1,163 @@
+THEORY BalanceX IS
+Battleships,43,0,18,15,0,0,0;
+Initialisation,3,0,2,1,0,0,0;
+Operation_deployFleet,4,0,4,0,0,0,0;
+Operation_playerShoots,14,0,4,10,0,0,0;
+WellDefinednessInvariant,4,0,0,0,0,0,0;
+WellDefinednessPrecondition_deployFleet,1,0,0,0,0,0,0;
+WellDefinednessPrecondition_playerShoots,2,0,2,0,0,0,0;
+WellDefinedness_playerShoots,10,0,4,4,0,0,0;
+WellDefinedness_shipsLeft,2,0,0,0,0,0,0;
+WellDefinedness_shotsTaken,3,0,2,0,0,0,0
+END
+&
+THEORY ProofState IS
+Unproved;
+Proved(Rapide);
+Proved(Rapide);
+Unproved;
+Unproved;
+Proved(Rapide);
+Proved(0);
+Unproved;
+Proved(Rapide);
+Proved(0);
+Proved(Rapide);
+Proved(0);
+Unproved;
+Proved(Rapide);
+Proved(0);
+Proved(Rapide);
+Proved(Rapide);
+Unproved;
+Unproved;
+Unproved;
+Unproved;
+Unproved;
+Proved(0);
+Proved(0);
+Proved(0);
+Proved(Rapide);
+Proved(0);
+Proved(0);
+Proved(Rapide);
+Proved(0);
+Proved(0);
+Proved(0);
+Proved(Rapide);
+Proved(0);
+Proved(0);
+Proved(Rapide);
+Proved(Rapide);
+Proved(Rapide);
+Proved(Rapide);
+Proved(Rapide);
+Proved(0);
+Proved(Rapide);
+Proved(Rapide)
+END
+&
+THEORY MethodList IS
+?;
+pr;
+pr;
+?;
+?;
+pr;
+pr;
+?;
+pr;
+pr;
+pr;
+pr;
+?;
+pr;
+pr;
+pr;
+pr;
+?;
+?;
+?;
+?;
+?;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr;
+pr
+END
+&
+THEORY PassList IS
+Force(0),(?; Rapide; 0; 1);
+Force(Rapide),?;
+Force(Rapide),?;
+Force(0),(?; Rapide; 0; 1);
+Force(0),(?; Rapide; 0; 1);
+Force(Rapide),?;
+Force(0),(?; Rapide);
+Force(0),(?; Rapide; 0; 1);
+Force(Rapide),?;
+Force(0),(?; Rapide);
+Force(Rapide),?;
+Force(0),(?; Rapide);
+Force(0),(?; Rapide; 0; 1);
+Force(Rapide),?;
+Force(0),(?; Rapide);
+Force(Rapide),?;
+Force(Rapide),?;
+Force(0),(?; Rapide; 0; 1);
+Force(0),(?; Rapide; 0; 1);
+Force(0),(?; Rapide; 0; 1);
+Force(0),(?; Rapide; 0; 1);
+Force(0),(?; Rapide; 0; 1);
+Force(0),(?; Rapide);
+Force(0),(?; Rapide);
+Force(0),(?; Rapide);
+Force(Rapide),?;
+Force(0),(?; Rapide);
+Force(0),(?; Rapide);
+Force(Rapide),?;
+Force(0),(?; Rapide);
+Force(0),(?; Rapide);
+Force(0),(?; Rapide);
+Force(Rapide),?;
+Force(0),(?; Rapide);
+Force(0),(?; Rapide);
+Force(Rapide),?;
+Force(Rapide),?;
+Force(Rapide),?;
+Force(Rapide),?;
+Force(Rapide),?;
+Force(0),(?; Rapide);
+Force(Rapide),?;
+Force(Rapide),?
+END
+&
+THEORY Status IS
+Battleships,43,0,33,0,0,0;
+Initialisation,3,0,3,0,0,0;
+Operation_deployFleet,4,0,4,0,0,0;
+Operation_playerShoots,14,0,14,0,0,0;
+WellDefinednessInvariant,4,0,0,0,0,0;
+WellDefinednessPrecondition_deployFleet,1,0,0,0,0,0;
+WellDefinednessPrecondition_playerShoots,2,0,2,0,0,0;
+WellDefinedness_playerShoots,10,0,8,0,0,0;
+WellDefinedness_shipsLeft,2,0,0,0,0,0;
+WellDefinedness_shotsTaken,3,0,2,0,0,0
+END

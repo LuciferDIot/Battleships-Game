@@ -201,7 +201,7 @@ OPERATIONS
 
     shipsquares <-- shipLocations(player) =
     PRE
-        player : PLAYER
+        player = current_turn
     THEN
         IF isPlayerTurn(Player_1) THEN
             shipsquares := fleet_1
