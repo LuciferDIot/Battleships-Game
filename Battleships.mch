@@ -212,7 +212,8 @@ OPERATIONS
     
     shipCounts <-- shipsLeft =
     BEGIN
-        shipCounts := (card(fleet_1), card(fleet_2))
+        shipCounts := {Player_1 |-> card(fleet_1),
+                           Player_2 |-> card(fleet_2)}
     END;
     
     shotCount <-- shotsTaken(player) =
