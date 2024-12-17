@@ -24,21 +24,11 @@ OPERATIONS
     THEN
         current_game_state := state
     END;
-
-    result <-- getState =
-    BEGIN
-        result := current_game_state
-    END;
     
     setCurrentPlayer(player) =
     PRE
         player : PLAYER
     THEN
         current_turn := player
-    END;
-
-    result <-- getCurrentPlayer =
-    BEGIN
-        result := current_turn
     END
 END
